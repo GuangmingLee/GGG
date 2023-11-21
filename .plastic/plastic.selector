@@ -1,0 +1,4 @@
+repository "FLDEN@curry-singer@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
