@@ -26,7 +26,7 @@ namespace SG
         public void GetPlayerInputHorizontalAndVerticalValue()
         {
             HorizontalMovement = PlayerInputManager.instance.horizontalInput;
-            VerticalMovement = PlayerInputManager.instance.VerticalInput;
+            VerticalMovement = PlayerInputManager.instance.verticalInput;
         }
 
         public void HandleAllMovement()
@@ -44,12 +44,12 @@ namespace SG
             moveDirection = moveDirection + PlayerCamera.instance.transform.right * HorizontalMovement;
             moveDirection.y = 0;
             moveDirection.Normalize();
-            if (PlayerInputManager.instance.MoveAmount > 0.5f)
+            if (PlayerInputManager.instance.moveAmount > 0.5f)
             {
                 //run
                 player.characterController.Move(moveDirection * RuningSpeed * Time.deltaTime);
             }
-            else if (PlayerInputManager.instance.MoveAmount <= 0.5f)
+            else if (PlayerInputManager.instance.moveAmount <= 0.5f)
             {
                 //walk
                 player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);

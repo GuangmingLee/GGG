@@ -10,9 +10,14 @@ namespace SG
     {
         public static PlayerInputManager instance;
         private PlayerControls playerControls;
-        [SerializeField] Vector2 moveMentInput;
-        [SerializeField] public float horizontalInput, VerticalInput;
-        [SerializeField] public float MoveAmount;
+        [Header("Movement")] [SerializeField] Vector2 moveMentInput;
+        [SerializeField] public float horizontalInput, verticalInput;
+        [SerializeField] public float moveAmount;
+
+        [Header("CameraMovement")] [SerializeField]
+        Vector2 cameraInput;
+
+        [SerializeField] public float cameraHorizontalInput, cameraVerticalInput;
 
         private void Awake()
         {
@@ -39,6 +44,7 @@ namespace SG
             {
                 playerControls = new PlayerControls();
                 playerControls.PlayerMovement.Movement.performed += i => moveMentInput = i.ReadValue<Vector2>();
+                playerControls.CameraMovement.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
             }
 
             playerControls.Enable();
@@ -70,6 +76,7 @@ namespace SG
                 }
             }
         }
+
         private void OnDestroy()
         {
             SceneManager.activeSceneChanged -= OnSceneChange;
@@ -77,17 +84,29 @@ namespace SG
 
         private void Update()
         {
-            VerticalInput = moveMentInput.y;
+            HandlePlayerMovement();
+            HandleCameraMovement();
+        }
+
+        void HandlePlayerMovement()
+        {
+            verticalInput = moveMentInput.y;
             horizontalInput = moveMentInput.x;
-            MoveAmount = Mathf.Clamp01(MathF.Abs(VerticalInput) + Mathf.Abs(horizontalInput));
-            if (MoveAmount > 0 && MoveAmount <= 0.5f)
+            moveAmount = Mathf.Clamp01(MathF.Abs(verticalInput) + Mathf.Abs(horizontalInput));
+            if (moveAmount > 0 && moveAmount <= 0.5f)
             {
-                MoveAmount = 0.5f;
+                moveAmount = 0.5f;
             }
-            else if (MoveAmount > 0.5f)
+            else if (moveAmount > 0.5f && moveAmount <= 1)
             {
-                MoveAmount = 1f;
+                moveAmount = 1f;
             }
+        }
+
+        void HandleCameraMovement()
+        {
+            cameraHorizontalInput = cameraInput.x;
+            cameraVerticalInput = cameraInput.y;
         }
     }
 }

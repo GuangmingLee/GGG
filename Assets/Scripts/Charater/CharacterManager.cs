@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+
 namespace SG
 {
     public class CharacterManager : NetworkBehaviour
     {
         public CharacterController characterController;
         CharacterNetworkManager characterNetworkManager;
+
         protected virtual void Awake()
         {
             characterController = GetComponent<CharacterController>();
@@ -33,10 +35,13 @@ namespace SG
 
                 //rotation
                 transform.rotation = Quaternion.Slerp(transform.rotation,
-                   characterNetworkManager.networkRotation.Value,
-                   characterNetworkManager.networkPositionSmoothTime);
-
+                    characterNetworkManager.networkRotation.Value,
+                    characterNetworkManager.networkPositionSmoothTime);
             }
+        }
+
+        protected virtual void LateUpdate()
+        {
         }
     }
 }
